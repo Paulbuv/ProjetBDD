@@ -10,6 +10,7 @@ header {
     color: white;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
 }
 
 header h1 {
@@ -185,4 +186,22 @@ form input[type="submit"]:hover {
 form button:active,
 form input[type="submit"]:active {
     transform: translateY(0);
+}
+
+/* Logo in header (top-right) */
+.header-logo {
+    position: absolute;
+    top: 14px;
+    right: 18px;
+    height: 48px;
+    width: auto;
+    border-radius: 6px;
+}
+
+@media (max-width: 600px) {
+    .header-logo {
+        height: 36px;
+        top: 10px;
+        right: 10px;
+    }
 }
