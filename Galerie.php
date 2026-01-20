@@ -90,7 +90,8 @@ if ($selectedConcours > 0) {
  
                         // Emoji rang
                         $medal = ($rang === 1) ? "🥇" : (($rang === 2) ? "🥈" : (($rang === 3) ? "🥉" : "🏅"));
-                        $imgUrl = "uploads/" . $image;
+                        // Les images sont stockées dans le dossier 'dessins'
+                        $imgUrl = "dessins/" . $image;
                     ?>
                     <div class="podium-card">
                         <div class="podium-rank"><?= $medal ?> Rang <?= $rang ?></div>
