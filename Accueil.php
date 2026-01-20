@@ -3,12 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <title>Concours de dessins - Accueil</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./CSS.css">
 </head>
 <body>
     <header>
         <h1>Gestion des concours de dessins</h1>
-        <img src="images/logo/logo_dessin.png" alt="Logo" class="header-logo">
+        <img src="images/logo/logo_dessin.png"
+             alt="Logo"
+             class="header-logo"
+        >
         <nav>
             <ul>
                 <li><a href="Accueil.php" class="active">Accueil</a></li>

@@ -47,13 +47,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Connexion - Concours de Dessin</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./CSS.css">
 </head>
 <body>
     <header>
         <h1>Gestion des concours de dessins</h1>
-        <img src="images/logo/logo_dessin.png" alt="Logo" class="header-logo">
-    </header>
+        <img src="images/logo/logo_dessin.png"
+             alt="Logo"
+             class="header-logo"
+        >
+        </header>
     <main style="max-width: 400px; margin: 50px auto; padding: 25px; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
         <h2>Connexion</h2>
         
