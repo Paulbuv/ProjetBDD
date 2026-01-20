@@ -193,14 +193,14 @@ form input[type="submit"]:active {
 
 .header-logo {
     position: absolute;
-    top: 10px;
-    right: 24px;
-    height: 32px;
-    max-width: 80px;
+    top: 15px;
+    right: 20px;
+    height: 85px;
+    max-width: 160px;
     width: auto;
     border-radius: 6px;
     object-fit: contain;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    /*box-shadow: 0 1px 4px rgba(0,0,0,0.00);*/
 }
 
 @media (max-width: 600px) {
