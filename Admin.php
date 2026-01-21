@@ -1,5 +1,5 @@
 <?php
-require_once 'auth.php';
+session_start();
 
 // ------------------------------------------------------------
 // Vérification : seul l'utilisateur "admin" peut accéder à cette page
@@ -101,7 +101,12 @@ try {
                 <li><a href="Concours.php">Concours</a></li>
                 <li><a href="Participants.php">Participants</a></li>
                 <li><a href="Galerie.php">Galerie</a></li>
-                <li><a href="Admin.php" class="active">Administration</a></li>
+                <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
+                    <li><a href="Admin.php" class="active">Administration</a></li>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['login'])): ?>
+                    <li><a href="Logout.php">Se déconnecter de <?php echo htmlspecialchars($_SESSION['login']); ?></a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
