@@ -53,27 +53,25 @@ try {
         $stmtTop->execute([':numConcours' => $selectedConcours]);
         $topDessins = $stmtTop->fetchAll();
 
-        // Tous les dessins du concours (pour "Voir plus")
-        if ($showAll) {
-            $sqlAll = "
-                SELECT 
-                    d.numDessin,
-                    d.classement,
-                    u.nom,
-                    u.prenom
-                FROM Dessin d
-                JOIN Competiteur c ON c.numCompetiteur = d.numCompetiteur
-                JOIN Utilisateur u ON u.numUtilisateur = c.numCompetiteur
-                WHERE d.numConcours = :numConcours
-                ORDER BY 
-                    CASE WHEN d.classement IS NULL THEN 1 ELSE 0 END,
-                    d.classement,
-                    d.numDessin
-            ";
-            $stmtAll = $pdo->prepare($sqlAll);
-            $stmtAll->execute([':numConcours' => $selectedConcours]);
-            $allDessins = $stmtAll->fetchAll();
-        }
+        // Tous les dessins du concours (pour la galerie complète)
+        $sqlAll = "
+            SELECT 
+                d.numDessin,
+                d.classement,
+                u.nom,
+                u.prenom
+            FROM Dessin d
+            JOIN Competiteur c ON c.numCompetiteur = d.numCompetiteur
+            JOIN Utilisateur u ON u.numUtilisateur = c.numCompetiteur
+            WHERE d.numConcours = :numConcours
+            ORDER BY 
+                CASE WHEN d.classement IS NULL THEN 1 ELSE 0 END,
+                d.classement,
+                d.numDessin
+        ";
+        $stmtAll = $pdo->prepare($sqlAll);
+        $stmtAll->execute([':numConcours' => $selectedConcours]);
+        $allDessins = $stmtAll->fetchAll();
     }
 } catch (PDOException $e) {
     // En cas d'erreur, on garde un tableau vide et on stocke le message
@@ -191,6 +189,59 @@ if (!isset($selectedConcours)) {
             <?php endif; ?>
         <?php endif; ?>
     </section>
+
+    <?php if ($selectedConcours > 0): ?>
+        <section>
+            <h3>Tous les dessins du concours</h3>
+
+            <?php if (empty($allDessins)): ?>
+                <p>Aucun dessin trouvé pour ce concours.</p>
+            <?php else: ?>
+                <div class="podium">
+                    <?php foreach ($allDessins as $dessin): ?>
+                        <?php
+                            $rangAll = isset($dessin['classement']) ? (int)$dessin['classement'] : 0;
+                            $nomAll = $dessin['nom'] ?? '';
+                            $prenomAll = $dessin['prenom'] ?? '';
+                            $titreAll = trim($prenomAll . ' ' . $nomAll);
+                            if ($titreAll === '') {
+                                $titreAll = 'Participant inconnu';
+                            }
+
+                            $numDessinAll = isset($dessin['numDessin']) ? (int)$dessin['numDessin'] : 0;
+                            $imagePathAll = '';
+                            if ($selectedConcours > 0 && $numDessinAll > 0) {
+                                $imagePathAll = "dessins/concours" . $selectedConcours . "_dessin" . $numDessinAll . ".jpg";
+                            }
+
+                            // Médaille uniquement si un classement est défini
+                            $medalAll = '';
+                            if ($rangAll > 0) {
+                                $medalAll = ($rangAll === 1) ? "🥇" : (($rangAll === 2) ? "🥈" : (($rangAll === 3) ? "🥉" : "🏅"));
+                            }
+                        ?>
+                        <div class="podium-card">
+                            <div class="podium-image-wrapper">
+                                <?php if (!empty($imagePathAll)): ?>
+                                    <img src="<?= htmlspecialchars($imagePathAll) ?>"
+                                         alt="Dessin du participant <?= htmlspecialchars($titreAll) ?>"
+                                         class="podium-img"
+                                         loading="lazy"
+                                    >
+                                <?php endif; ?>
+                                <div class="podium-caption">
+                                    <?php if ($rangAll > 0): ?>
+                                        <span class="podium-rank-text"><?= $medalAll ?> Rang <?= htmlspecialchars((string)$rangAll) ?></span>
+                                    <?php endif; ?>
+                                    <span class="podium-name-text"><?= htmlspecialchars($titreAll) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+        </section>
+    <?php endif; ?>
 </main>
 
 <footer>
