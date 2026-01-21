@@ -1,5 +1,5 @@
 <?php
-require_once 'auth.php';
+session_start();
 
 // Connexion à la base de données (identique à Concours.php)
 $dsn = 'mysql:host=localhost;dbname=Projet_BDD;charset=utf8mb4';
@@ -45,7 +45,12 @@ try {
                 <li><a href="Concours.php">Concours</a></li>
                 <li><a href="Participants.php">Participants</a></li>
                 <li><a href="Galerie.php">Galerie</a></li>
-                <li><a href="Admin.php">Administration</a></li>
+                <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
+                    <li><a href="Admin.php">Administration</a></li>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['login'])): ?>
+                    <li><a href="Logout.php">Se déconnecter de <?php echo htmlspecialchars($_SESSION['login']); ?></a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>

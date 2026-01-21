@@ -1,5 +1,5 @@
 <?php
-require_once 'auth.php';
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -21,7 +21,12 @@ require_once 'auth.php';
                 <li><a href="Concours.php" class="active">Concours</a></li>
                 <li><a href="Participants.php">Participants</a></li>
                 <li><a href="Galerie.php">Galerie</a></li>
-                <li><a href="Admin.php">Administration</a></li>
+                <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
+                    <li><a href="Admin.php">Administration</a></li>
+                <?php endif; ?>
+                <?php if (isset($_SESSION['login'])): ?>
+                    <li><a href="Logout.php">Se déconnecter de <?php echo htmlspecialchars($_SESSION['login']); ?></a></li>
+                <?php endif; ?>
             </ul>
         </nav>
     </header>
