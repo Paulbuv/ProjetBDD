@@ -86,7 +86,6 @@ try {
             <div class="hero-badge">
                 <p class="badge-title">Concours en cours</p>
                 <p class="badge-number"><?php echo count($concoursEnCours); ?></p>
-                <p class="badge-subtitle">sélectionnés pour toi</p>
             </div>
             <div class="floating-shapes" aria-hidden="true">
                 <span></span><span></span><span></span><span></span>
@@ -95,16 +94,19 @@ try {
 
         <section class="info-grid" data-anim>
             <div class="info-card">
-                <h3>Créer</h3>
-                <p>Lance un nouveau concours avec tes règles, tes dates et ton jury.</p>
+                <p class="kicker">Communauté</p>
+                <h3><?php echo $stats['participants']; ?> Participants</h3>
+                <p>Nombre total d'artistes inscrits sur la plateforme Zoom Dessin.</p>
             </div>
             <div class="info-card">
-                <h3>Participer</h3>
-                <p>Inscris-toi en quelques clics et suis tes soumissions en temps réel.</p>
+                <p class="kicker">Événements</p>
+                <h3><?php echo $stats['concours_totaux']; ?> Concours</h3>
+                <p>Contestations organisées depuis le lancement, incluant ceux terminés et à venir.</p>
             </div>
             <div class="info-card">
-                <h3>Célébrer</h3>
-                <p>Mets en avant les gagnants, partage les galeries et inspire la communauté.</p>
+                <p class="kicker">Créativité</p>
+                <h3><?php echo $stats['dessins_publies']; ?> Œuvres</h3>
+                <p>Total des dessins soumise par nos membres à travers tous les concours.</p>
             </div>
         </section>
 
