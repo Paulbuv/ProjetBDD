@@ -601,7 +601,7 @@ form input[type="submit"]:active {
     }
 
     .hero-badge {
-        width: 180px;
+        width: 170px;
         justify-self: flex-start;
     }
 
