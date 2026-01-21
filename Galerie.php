@@ -1,33 +1,89 @@
 <?php
-$concours = [
-    1 => "Concours 1",
-    2 => "Concours 2",
-    3 => "Concours 3"
-];
- 
-$selectedConcours = isset($_GET['concours']) ? intval($_GET['concours']) : 0;
- 
-// Fichier résultats JSON
-$resultsDir = __DIR__ . "/uploads/resultats/";
-$resultsFile = $selectedConcours > 0 ? $resultsDir . "concours" . $selectedConcours . ".json" : null;
- 
-// Lecture du JSON
-$podium = [];
-$error = "";
- 
-if ($selectedConcours > 0) {
-    if (file_exists($resultsFile)) {
-        $json = file_get_contents($resultsFile);
-        $data = json_decode($json, true);
- 
-        if (json_last_error() === JSON_ERROR_NONE && isset($data["podium"]) && is_array($data["podium"])) {
-            $podium = $data["podium"];
-        } else {
-            $error = "Fichier de résultats invalide (JSON).";
-        }
-    } else {
-        $error = "Aucun résultat enregistré pour ce concours.";
+// ------------------------------------------------------------
+// Récupération dynamique de la liste des concours depuis la BDD
+// ------------------------------------------------------------
+$dsn = 'mysql:host=localhost;dbname=Projet_BDD;charset=utf8mb4';
+$dbUser = 'db_etu';
+$dbPass = 'N3twork!';
+
+$concours = [];
+$erreurConnexion = null;
+$topDessins = [];
+$allDessins = [];
+$showAll = isset($_GET['showAll']) && $_GET['showAll'] === '1';
+
+try {
+    $pdo = new PDO($dsn, $dbUser, $dbPass, [
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+        PDO::ATTR_TIMEOUT => 3,
+    ]);
+
+    // On récupère les numéros et les thèmes des concours
+    $sql = "SELECT numConcours, theme 
+            FROM Concours
+            ORDER BY dateDeb DESC";
+    $stmt = $pdo->query($sql);
+
+    while ($row = $stmt->fetch()) {
+        $id = (int)$row['numConcours'];
+        $nom = $row['theme'];
+        $concours[$id] = $nom;
     }
+
+    // Si un concours est sélectionné, récupérer les dessins en BDD
+    $selectedConcours = isset($_GET['concours']) ? intval($_GET['concours']) : 0;
+    if ($selectedConcours > 0) {
+        // 3 premiers pour le podium
+        $sqlTop = "
+            SELECT 
+                d.numDessin,
+                d.classement,
+                u.nom,
+                u.prenom
+            FROM Dessin d
+            JOIN Competiteur c ON c.numCompetiteur = d.numCompetiteur
+            JOIN Utilisateur u ON u.numUtilisateur = c.numCompetiteur
+            WHERE d.numConcours = :numConcours
+              AND d.classement IS NOT NULL
+            ORDER BY d.classement ASC
+            LIMIT 3
+        ";
+        $stmtTop = $pdo->prepare($sqlTop);
+        $stmtTop->execute([':numConcours' => $selectedConcours]);
+        $topDessins = $stmtTop->fetchAll();
+
+        // Tous les dessins du concours (pour "Voir plus")
+        if ($showAll) {
+            $sqlAll = "
+                SELECT 
+                    d.numDessin,
+                    d.classement,
+                    u.nom,
+                    u.prenom
+                FROM Dessin d
+                JOIN Competiteur c ON c.numCompetiteur = d.numCompetiteur
+                JOIN Utilisateur u ON u.numUtilisateur = c.numCompetiteur
+                WHERE d.numConcours = :numConcours
+                ORDER BY 
+                    CASE WHEN d.classement IS NULL THEN 1 ELSE 0 END,
+                    d.classement,
+                    d.numDessin
+            ";
+            $stmtAll = $pdo->prepare($sqlAll);
+            $stmtAll->execute([':numConcours' => $selectedConcours]);
+            $allDessins = $stmtAll->fetchAll();
+        }
+    }
+} catch (PDOException $e) {
+    // En cas d'erreur, on garde un tableau vide et on stocke le message
+    $concours = [];
+    $erreurConnexion = $e->getMessage();
+}
+ 
+// Si la connexion a échoué, on récupère quand même le concours sélectionné pour le formulaire
+if (!isset($selectedConcours)) {
+    $selectedConcours = isset($_GET['concours']) ? intval($_GET['concours']) : 0;
 }
 ?>
 <!DOCTYPE html>
@@ -73,41 +129,50 @@ if ($selectedConcours > 0) {
  
     <section>
         <h3>Podium</h3>
- 
+
         <?php if ($selectedConcours === 0): ?>
             <p>Veuillez sélectionner un concours.</p>
- 
-        <?php elseif (!empty($error)): ?>
-            <p><?= htmlspecialchars($error) ?></p>
- 
+        <?php elseif (!empty($erreurConnexion)): ?>
+            <p style="color:red;">
+                Erreur de connexion à la base de données :
+                <?= htmlspecialchars($erreurConnexion, ENT_QUOTES, 'UTF-8'); ?>
+            </p>
         <?php else: ?>
-            <div class="podium">
-                <?php foreach ($podium as $item): ?>
-                    <?php
-                        $rang = intval($item["rang"] ?? 0);
-                        $participant = $item["participant"] ?? "Inconnu";
-                        $score = $item["score"] ?? "";
-                        $image = $item["image"] ?? "";
- 
-                        // Emoji rang
-                        $medal = ($rang === 1) ? "🥇" : (($rang === 2) ? "🥈" : (($rang === 3) ? "🥉" : "🏅"));
-                        // Les images sont stockées dans le dossier 'dessins'
-                        $imgUrl = "dessins/" . $image;
-                    ?>
-                    <div class="podium-card">
-                        <div class="podium-rank"><?= $medal ?> Rang <?= $rang ?></div>
-                        <div class="podium-name"><?= htmlspecialchars($participant) ?></div>
- 
-                        <?php if (!empty($image)): ?>
-                            <img class="podium-img" src="<?= htmlspecialchars($imgUrl) ?>" alt="dessin">
-                        <?php endif; ?>
- 
-                        <?php if ($score !== ""): ?>
-                            <div class="podium-score">Score : <?= htmlspecialchars((string)$score) ?></div>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-            </div>
+            <?php if (empty($topDessins)): ?>
+                <p>Aucun classement trouvé pour ce concours.</p>
+            <?php else: ?>
+                <div class="podium" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:16px;">
+                    <?php foreach ($topDessins as $dessin): ?>
+                        <?php
+                            $rang = isset($dessin['classement']) ? (int)$dessin['classement'] : 0;
+                            $nom = $dessin['nom'] ?? '';
+                            $prenom = $dessin['prenom'] ?? '';
+                            $titre = trim($prenom . ' ' . $nom);
+                            if ($titre === '') {
+                                $titre = 'Participant inconnu';
+                            }
+                            $medal = ($rang === 1) ? "🥇" : (($rang === 2) ? "🥈" : (($rang === 3) ? "🥉" : "🏅"));
+
+                            // Construction du chemin de l'image : concoursX_dessinY.jpg
+                            // Exemple : concours1_dessin3.jpg
+                            $numDessin = isset($dessin['numDessin']) ? (int)$dessin['numDessin'] : 0;
+                            $imagePath = '';
+                            if ($selectedConcours > 0 && $numDessin > 0) {
+                                $imagePath = "dessins/concours" . $selectedConcours . "_dessin" . $numDessin . ".jpg";
+                            }
+                        ?>
+                        <div class="podium-card" style="background:#fff;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.08);overflow:hidden;border:1px solid #e0e0e0;">
+                            <div class="podium-image-wrapper" style="position:relative;width:100%;height:220px;overflow:hidden;background:linear-gradient(135deg,#ffe0b2,#ffb74d);">
+                                <!-- Pour l'instant, pas d'image, seulement une box vide avec le bandeau -->
+                                <div class="podium-caption" style="position:absolute;left:0;right:0;bottom:0;padding:8px 10px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.75));color:#fff;display:flex;flex-direction:column;gap:2px;">
+                                    <span class="podium-rank-text" style="font-weight:700;font-size:0.95em;"><?= $medal ?> Rang <?= htmlspecialchars((string)$rang) ?></span>
+                                    <span class="podium-name-text" style="font-size:0.9em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?= htmlspecialchars($titre) ?></span>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         <?php endif; ?>
     </section>
 </main>
