@@ -74,7 +74,7 @@ try {
         <section>
             <h3>Ce que tu peux faire ici</h3>
             <ul>
-                <li>Créer et planifier de nouveaux concours de dessins.</li>
+                <li>Seb et planifier de nouveaux concours de dessins.</li>
                 <li>Enregistrer et suivre les participants.</li>
                 <li>Afficher les dessins soumis dans une galerie.</li>
                 <li>Publier les résultats et les gagnants.</li>
