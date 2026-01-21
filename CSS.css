@@ -1,7 +1,9 @@
 body {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f8;
+    font-family: 'Inter', Arial, sans-serif;
+    background: radial-gradient(circle at 15% 20%, rgba(255, 183, 77, 0.16), transparent 32%),
+                radial-gradient(circle at 85% 10%, rgba(255, 138, 101, 0.16), transparent 30%),
+                #fefbf7;
     color: #333;
 }
 
@@ -89,6 +91,15 @@ main h2 {
 
 .link:hover {
     text-decoration: underline;
+}
+
+.hero-kicker {
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #fff;
+    text-transform: uppercase;
+    margin: 0 0 2px 0;
+    opacity: 0.9;
 }
 
 section {
@@ -229,6 +240,9 @@ form input[type="submit"]:active {
     border-radius: 10px;
     background: linear-gradient(135deg, #ffb74d 60%, #fff7ed 100%);
     align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(255, 138, 101, 0.24);
 }
 
 .hero-content h2 {
@@ -285,6 +299,8 @@ form input[type="submit"]:active {
     text-align: center;
     padding: 18px 12px;
     box-shadow: 0 12px 30px rgba(255, 138, 101, 0.18);
+    position: relative;
+    isolation: isolate;
 }
 
 .hero-badge .badge-title {
@@ -306,6 +322,33 @@ form input[type="submit"]:active {
     font-size: 0.95em;
 }
 
+.floating-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-shapes span {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255,138,101,0.4), rgba(255,183,77,0));
+    filter: blur(18px);
+    opacity: 0.7;
+    animation: float 12s ease-in-out infinite;
+}
+
+.floating-shapes span:nth-child(1) { top: -30px; left: -20px; animation-delay: 0s; }
+.floating-shapes span:nth-child(2) { top: 10%; right: -40px; animation-delay: 2.5s; }
+.floating-shapes span:nth-child(3) { bottom: -35px; left: 15%; animation-delay: 4s; }
+.floating-shapes span:nth-child(4) { bottom: 10%; right: 18%; animation-delay: 6s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-18px) scale(1.08); opacity: 0.95; }
+}
+
 /* --- Info grid --- */
 .info-grid {
     display: grid;
@@ -320,6 +363,9 @@ form input[type="submit"]:active {
     border-radius: 8px;
     padding: 16px;
     box-shadow: 0 3px 10px rgba(255, 138, 101, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .info-card h3 {
@@ -329,6 +375,24 @@ form input[type="submit"]:active {
 .info-card p {
     margin: 0;
     color: #4a4a4a;
+}
+
+.info-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(255,138,101,0.12), transparent 50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(255, 138, 101, 0.16);
+}
+
+.info-card:hover::after {
+    opacity: 1;
 }
 
 /* --- Concours cards --- */
@@ -355,6 +419,9 @@ form input[type="submit"]:active {
     flex-direction: column;
     gap: 8px;
     min-height: 210px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
 }
 
 .concours-card__header {
@@ -394,6 +461,24 @@ form input[type="submit"]:active {
     margin: 0;
     color: #4a4a4a;
     flex: 1;
+}
+
+.concours-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,138,101,0.06), rgba(255,183,77,0.08));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+}
+
+.concours-card:hover {
+    box-shadow: 0 14px 32px rgba(255, 138, 101, 0.22);
+    border-color: #ffb74d;
+}
+
+.concours-card:hover::after {
+    opacity: 1;
 }
 
 .card-actions {
@@ -438,6 +523,41 @@ form input[type="submit"]:active {
     border: 1px solid #ffd7ba;
 }
 
+/* Animations d’apparition */
+[data-anim] {
+    opacity: 0;
+    transform: translateY(18px) scale(0.99);
+    transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+[data-anim].is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+/* Boutons accent */
+.btn.primary {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn.primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+}
+
+.btn.primary:hover::after {
+    transform: translateX(100%);
+}
+
+.pill {
+    box-shadow: 0 6px 14px rgba(255, 138, 101, 0.16);
+}
+
 /* Logo in header (top-right) */
 
 
@@ -448,5 +568,19 @@ form input[type="submit"]:active {
         max-width: 50px;
         top: 8px;
         right: 10px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+        text-align: left;
+    }
+
+    .hero-badge {
+        width: 160px;
+        justify-self: flex-start;
+    }
+
+    .concours-grid {
+        grid-template-columns: 1fr;
     }
 }

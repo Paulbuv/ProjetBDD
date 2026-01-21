@@ -48,7 +48,7 @@ try {
         </nav>
     </header>
     <main>
-        <section class="hero">
+        <section class="hero" data-anim>
             <div class="hero-content">
                 <p class="hero-kicker">Plateforme des concours de dessin</p>
                 <h2>Bienvenue sur <span>Zoom Dessin</span></h2>
@@ -66,9 +66,12 @@ try {
                 <p class="badge-number"><?php echo count($concoursEnCours); ?></p>
                 <p class="badge-subtitle">sélectionnés pour toi</p>
             </div>
+            <div class="floating-shapes">
+                <span></span><span></span><span></span><span></span>
+            </div>
         </section>
 
-        <section class="info-grid">
+        <section class="info-grid" data-anim>
             <div class="info-card">
                 <h3>Créer</h3>
                 <p>Lance un nouveau concours avec tes règles, tes dates et ton jury.</p>
@@ -83,7 +86,7 @@ try {
             </div>
         </section>
 
-        <section>
+        <section data-anim>
             <div class="section-head">
                 <div>
                     <p class="kicker">À la une</p>
@@ -99,7 +102,7 @@ try {
             <?php else: ?>
                 <div class="concours-grid">
                     <?php foreach ($concoursEnCours as $concours): ?>
-                        <article class="concours-card">
+                        <article class="concours-card" data-tilt data-anim>
                             <div class="concours-card__header">
                                 <span class="pill"><?php echo htmlspecialchars($concours['Etat']); ?></span>
                                 <span class="pill pill-light">n°<?php echo htmlspecialchars($concours['numConcours']); ?></span>
@@ -121,7 +124,7 @@ try {
             <?php endif; ?>
         </section>
 
-        <section class="about">
+        <section class="about" data-anim>
             <div class="about-text">
                 <p class="kicker">Qui sommes-nous ?</p>
                 <h3>Une équipe de 4 étudiants ingénieurs passionnés d’art</h3>
@@ -136,6 +139,33 @@ try {
     <footer>
         <p>&copy; <?php echo date('Y'); ?> - Gestion des concours de dessins</p>
     </footer>
+    <script>
+        // Animations d’apparition
+        document.addEventListener('DOMContentLoaded', () => {
+            const animated = document.querySelectorAll('[data-anim]');
+            const io = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) entry.target.classList.add('is-visible');
+                });
+            }, { threshold: 0.2 });
+            animated.forEach(el => io.observe(el));
+
+            // Effet tilt léger sur les cartes de concours
+            document.querySelectorAll('[data-tilt]').forEach(card => {
+                const reset = () => { card.style.transform = ''; };
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    const rotateX = (y / rect.height) * -4;
+                    const rotateY = (x / rect.width) * 4;
+                    card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+                });
+                card.addEventListener('mouseleave', reset);
+                card.addEventListener('blur', reset);
+            });
+        });
+    </script>
 </body>
 </html>
 
