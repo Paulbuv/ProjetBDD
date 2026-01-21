@@ -72,6 +72,25 @@ main h2 {
     margin-top: 0;
 }
 
+.kicker {
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ff8a65;
+    margin: 0 0 4px 0;
+    font-weight: 700;
+}
+
+.link {
+    color: #ff8a65;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
 section {
     margin-top: 20px;
     padding: 15px;
@@ -199,6 +218,224 @@ form input[type="submit"]:hover {
 form button:active,
 form input[type="submit"]:active {
     transform: translateY(0);
+}
+
+/* --- Accueil / Hero --- */
+.hero {
+    display: grid;
+    grid-template-columns: 1.6fr 0.9fr;
+    gap: 22px;
+    padding: 28px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ffb74d 60%, #fff7ed 100%);
+    align-items: center;
+}
+
+.hero-content h2 {
+    font-size: 2.2em;
+    margin: 8px 0 6px 0;
+}
+
+.hero-content h2 span {
+    color: #ff8a65;
+}
+
+.hero-text {
+    margin: 0 0 16px 0;
+    color: #4a4a4a;
+    line-height: 1.5;
+    max-width: 560px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+
+.btn.primary {
+    background: linear-gradient(135deg, #ff8a65, #ffb74d);
+    color: #fff;
+    box-shadow: 0 6px 16px rgba(255, 138, 101, 0.25);
+}
+
+.btn.ghost {
+    border: 2px solid #ff8a65;
+    color: #ff8a65;
+    background: #fff7ed;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.hero-badge {
+    background: #fff;
+    border: 1px solid #ffd7ba;
+    border-radius: 10px;
+    text-align: center;
+    padding: 18px 12px;
+    box-shadow: 0 12px 30px rgba(255, 138, 101, 0.18);
+}
+
+.hero-badge .badge-title {
+    margin: 0;
+    font-weight: 700;
+    color: #ff8a65;
+}
+
+.hero-badge .badge-number {
+    font-size: 2.4em;
+    margin: 6px 0 2px 0;
+    font-weight: 800;
+    color: #333;
+}
+
+.hero-badge .badge-subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* --- Info grid --- */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.info-card {
+    background: #fff7ed;
+    border: 1px solid #ffe0b2;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 3px 10px rgba(255, 138, 101, 0.08);
+}
+
+.info-card h3 {
+    margin: 0 0 6px 0;
+}
+
+.info-card p {
+    margin: 0;
+    color: #4a4a4a;
+}
+
+/* --- Concours cards --- */
+.section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.concours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.concours-card {
+    background: #fff;
+    border: 1px solid #ffe0b2;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 6px 18px rgba(255, 138, 101, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 210px;
+}
+
+.concours-card__header {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #ff8a65;
+    color: #fff;
+    font-size: 0.85em;
+    font-weight: 700;
+}
+
+.pill-light {
+    background: #fff0e5;
+    color: #ff8a65;
+    border: 1px solid #ffcca9;
+}
+
+.concours-card h4 {
+    margin: 0;
+    color: #2c2c2c;
+}
+
+.concours-card .dates {
+    margin: 0;
+    font-weight: 600;
+    color: #444;
+}
+
+.concours-card .description {
+    margin: 0;
+    color: #4a4a4a;
+    flex: 1;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.error {
+    color: #d32f2f;
+    font-weight: 700;
+}
+
+.muted {
+    color: #666;
+}
+
+/* --- About section --- */
+.about {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    align-items: center;
+}
+
+.about-text h3 {
+    margin: 4px 0 10px 0;
+}
+
+.about-text p {
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+}
+
+.about-media {
+    text-align: center;
+}
+
+.about-photo {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+    border: 1px solid #ffd7ba;
 }
 
 /* Logo in header (top-right) */

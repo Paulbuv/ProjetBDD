@@ -12,8 +12,14 @@ try {
         PDO::ATTR_TIMEOUT => 3,
     ]);
 
-    // Requête adaptée à la table Concours pour les concours en cours (même logique que Concours.php)
-    $sql = "SELECT numConcours, numPresident, theme, dateDeb, dateFin, Etat, description FROM Concours WHERE Etat = 'en cours' ORDER BY dateDeb DESC LIMIT 4";
+    // On neutralise la casse/les variantes de l'état pour éviter de masquer les concours en cours
+    $sql = "
+        SELECT numConcours, numPresident, theme, dateDeb, dateFin, Etat, description
+        FROM Concours
+        WHERE LOWER(Etat) = 'en cours'
+        ORDER BY dateDeb DESC
+        LIMIT 4
+    ";
     $stmt = $pdo->query($sql);
     $concoursEnCours = $stmt->fetchAll();
 } catch (PDOException $e) {
@@ -42,47 +48,89 @@ try {
         </nav>
     </header>
     <main>
-        <section style="text-align:center; padding: 40px 10px 30px 10px; background: linear-gradient(135deg, #ffb74d 60%, #fff7ed 100%); border-radius: 12px; margin-bottom: 30px;">
-            <h2 style="font-size:2.3em; margin-bottom: 0.2em; color:#ff8a65;">Bienvenue sur <span style="font-weight:bold; color:#333;">Zoom Dessin</span></h2>
-            <p style="font-size:1.2em; max-width:700px; margin: 0 auto 1.2em auto; color:#444;">La plateforme moderne pour organiser, participer et célébrer la créativité à travers des concours de dessins ouverts à tous. Découvrez les concours en cours, explorez les œuvres, et rejoignez la communauté !</p>
+        <section class="hero">
+            <div class="hero-content">
+                <p class="hero-kicker">Plateforme des concours de dessin</p>
+                <h2>Bienvenue sur <span>Zoom Dessin</span></h2>
+                <p class="hero-text">
+                    Organise, participe et fais rayonner la créativité. Découvre les concours en cours,
+                    inspire-toi des œuvres de la communauté et partage tes talents.
+                </p>
+                <div class="hero-actions">
+                    <a class="btn primary" href="Concours.php">Voir les concours</a>
+                    <a class="btn ghost" href="Galerie.php">Explorer la galerie</a>
+                </div>
+            </div>
+            <div class="hero-badge">
+                <p class="badge-title">Concours en cours</p>
+                <p class="badge-number"><?php echo count($concoursEnCours); ?></p>
+                <p class="badge-subtitle">sélectionnés pour toi</p>
+            </div>
         </section>
+
+        <section class="info-grid">
+            <div class="info-card">
+                <h3>Créer</h3>
+                <p>Lance un nouveau concours avec tes règles, tes dates et ton jury.</p>
+            </div>
+            <div class="info-card">
+                <h3>Participer</h3>
+                <p>Inscris-toi en quelques clics et suis tes soumissions en temps réel.</p>
+            </div>
+            <div class="info-card">
+                <h3>Célébrer</h3>
+                <p>Mets en avant les gagnants, partage les galeries et inspire la communauté.</p>
+            </div>
+        </section>
+
         <section>
-            <h3 style="font-size:1.4em; color:#ff8a65; margin-bottom:0.7em;">Concours en cours</h3>
+            <div class="section-head">
+                <div>
+                    <p class="kicker">À la une</p>
+                    <h3>Concours en cours</h3>
+                </div>
+                <a class="link" href="Concours.php">Tous les concours →</a>
+            </div>
+
             <?php if ($erreurConnexion): ?>
-                <p style="color: red;">Erreur de connexion à la base de données : <?php echo htmlspecialchars($erreurConnexion); ?></p>
+                <p class="error">Erreur de connexion à la base de données : <?php echo htmlspecialchars($erreurConnexion); ?></p>
             <?php elseif (empty($concoursEnCours)): ?>
-                <p>Aucun concours en cours pour le moment.</p>
+                <p class="muted">Aucun concours en cours pour le moment.</p>
             <?php else: ?>
-                <div style="display: flex; flex-wrap: wrap; gap: 24px; justify-content: center;">
+                <div class="concours-grid">
                     <?php foreach ($concoursEnCours as $concours): ?>
-                        <div style="flex:1 1 220px; min-width:220px; max-width:320px; background: #fff7ed; border:1px solid #ffe0b2; border-radius:10px; box-shadow:0 2px 8px rgba(255,138,101,0.07); padding:18px 16px 14px 16px; margin-bottom:10px;">
-                            <h4 style="margin:0 0 0.5em 0; color:#ff8a65; font-size:1.15em;">Thème : <?php echo htmlspecialchars($concours['theme']); ?></h4>
-                            <div style="font-size:0.98em; color:#555; margin-bottom:0.5em;">
-                                <span><b>Du</b> <?php echo date('d/m/Y', strtotime($concours['dateDeb'])); ?></span> <b>au</b> <span><?php echo date('d/m/Y', strtotime($concours['dateFin'])); ?></span>
+                        <article class="concours-card">
+                            <div class="concours-card__header">
+                                <span class="pill"><?php echo htmlspecialchars($concours['Etat']); ?></span>
+                                <span class="pill pill-light">n°<?php echo htmlspecialchars($concours['numConcours']); ?></span>
                             </div>
-                            <div style="font-size:0.97em; color:#333; min-height:48px; margin-bottom:0.5em;">
+                            <h4><?php echo htmlspecialchars($concours['theme']); ?></h4>
+                            <p class="dates">
+                                Du <?php echo date('d/m/Y', strtotime($concours['dateDeb'])); ?>
+                                au <?php echo date('d/m/Y', strtotime($concours['dateFin'])); ?>
+                            </p>
+                            <p class="description">
                                 <?php echo nl2br(htmlspecialchars($concours['description'])); ?>
+                            </p>
+                            <div class="card-actions">
+                                <a class="link" href="Concours.php">Voir le concours</a>
                             </div>
-                            <div style="text-align:right;">
-                                <a href="Concours.php" style="color:#ff8a65; text-decoration:underline; font-weight:600;">Voir le concours</a>
-                            </div>
-                        </div>
+                        </article>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </section>
-        <section>
-            <h3>Ce que tu peux faire ici</h3>
-            <ul>
-                <li>Seb et planifier de nouveaux concours de dessins.</li>
-                <li>Enregistrer et suivre les participants.</li>
-                <li>Afficher les dessins soumis dans une galerie.</li>
-                <li>Publier les résultats et les gagnants.</li>
-            </ul>
-        </section>
-        <section>
-            <h3>Navigation rapide</h3>
-            <p>Utilise les onglets du haut pour accéder directement aux différentes parties de l’application.</p>
+
+        <section class="about">
+            <div class="about-text">
+                <p class="kicker">Qui sommes-nous ?</p>
+                <h3>Une équipe de 4 étudiants ingénieurs passionnés d’art</h3>
+                <p>Nous sommes quatre étudiants de l’ESEO réunis par l’envie de mettre la technologie au service de la créativité. Nous imaginons, concevons et animons cette plateforme pour faciliter l’organisation de concours, valoriser les talents et rapprocher les artistes de toutes les générations.</p>
+                <p>Notre ambition : offrir un espace simple, moderne et chaleureux pour que chacun puisse lancer un concours, partager ses œuvres et célébrer l’art sous toutes ses formes.</p>
+            </div>
+            <div class="about-media">
+                <img src="https://www.eseo.fr/sites/default/files/styles/1920x900/public/2023-09/eseo-angers-campus.jpg" alt="Campus de l'ESEO" class="about-photo" loading="lazy">
+            </div>
         </section>
     </main>
     <footer>
