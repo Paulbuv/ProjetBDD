@@ -66,7 +66,7 @@ try {
                 <p class="badge-number"><?php echo count($concoursEnCours); ?></p>
                 <p class="badge-subtitle">sélectionnés pour toi</p>
             </div>
-            <div class="floating-shapes">
+            <div class="floating-shapes" aria-hidden="true">
                 <span></span><span></span><span></span><span></span>
             </div>
         </section>
@@ -140,17 +140,23 @@ try {
         <p>&copy; <?php echo date('Y'); ?> - Gestion des concours de dessins</p>
     </footer>
     <script>
-        // Animations d’apparition
+        // Accueil: animations d’apparition + tilt léger (sans librairies)
         document.addEventListener('DOMContentLoaded', () => {
             const animated = document.querySelectorAll('[data-anim]');
+
+            // Apparition au scroll
             const io = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) entry.target.classList.add('is-visible');
                 });
-            }, { threshold: 0.2 });
+            }, { threshold: 0.18 });
             animated.forEach(el => io.observe(el));
 
-            // Effet tilt léger sur les cartes de concours
+            // Tilt doux sur cartes
+            const prefersReduced =
+                window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (prefersReduced) return;
+
             document.querySelectorAll('[data-tilt]').forEach(card => {
                 const reset = () => { card.style.transform = ''; };
                 card.addEventListener('mousemove', (e) => {
@@ -159,7 +165,8 @@ try {
                     const y = e.clientY - rect.top - rect.height / 2;
                     const rotateX = (y / rect.height) * -4;
                     const rotateY = (x / rect.width) * 4;
-                    card.style.transform = `perspective(700px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+                    card.style.transform =
+                        `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
                 });
                 card.addEventListener('mouseleave', reset);
                 card.addEventListener('blur', reset);
