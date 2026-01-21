@@ -1,5 +1,5 @@
 <?php
-// Connexion à la base de données (mêmes paramètres que Concours.php)
+// Connexion à la base de données (identique à Concours.php)
 $dsn = 'mysql:host=localhost;dbname=Projet_BDD;charset=utf8mb4';
 $dbUser = 'db_etu';
 $dbPass = 'N3twork!';
@@ -11,8 +11,9 @@ try {
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
         PDO::ATTR_TIMEOUT => 3,
     ]);
-    // On récupère les 4 concours en cours (Etat = 'en cours')
-    $sql = "SELECT numConcours, theme, dateDeb, dateFin, description FROM Concours WHERE Etat = 'en cours' ORDER BY dateDeb DESC LIMIT 4";
+
+    // Requête adaptée à la table Concours pour les concours en cours (même logique que Concours.php)
+    $sql = "SELECT numConcours, numPresident, theme, dateDeb, dateFin, Etat, description FROM Concours WHERE Etat = 'en cours' ORDER BY dateDeb DESC LIMIT 4";
     $stmt = $pdo->query($sql);
     $concoursEnCours = $stmt->fetchAll();
 } catch (PDOException $e) {
