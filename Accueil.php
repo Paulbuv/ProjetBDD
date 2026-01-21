@@ -1,4 +1,6 @@
 <?php
+require_once 'auth.php';
+
 // Connexion à la base de données (identique à Concours.php)
 $dsn = 'mysql:host=localhost;dbname=Projet_BDD;charset=utf8mb4';
 $dbUser = 'db_etu';

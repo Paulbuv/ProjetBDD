@@ -1,4 +1,6 @@
 <?php
+require_once 'auth.php';
+
 // ------------------------------------------------------------
 // Récupération dynamique de la liste des concours depuis la BDD
 // ------------------------------------------------------------
