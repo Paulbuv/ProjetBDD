@@ -1,26 +1,44 @@
 <?php
 session_start();
 
-// Connexion à la base de données (identique à Concours.php)
 $dsn = 'mysql:host=localhost;dbname=Projet_BDD;charset=utf8mb4';
 $dbUser = 'db_etu';
 $dbPass = 'N3twork!';
 $erreurConnexion = null;
+
 $concoursEnCours = [];
+$stats = [
+    'participants' => 0,
+    'concours_totaux' => 0,
+    'dessins_publies' => 0
+];
+
 try {
     $pdo = new PDO($dsn, $dbUser, $dbPass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_TIMEOUT => 5, // Augmenté légèrement pour la stabilité
+        PDO::ATTR_TIMEOUT => 5,
     ]);
 
-    // Note : Vérifiez si votre table est "Concours" ou "concours"
-    // Utilisation de LIKE pour être plus flexible sur les espaces éventuels
-    $sql = "
-        SELECT COUNT(*) FROM Concours WHERE Etat = 'en cours';
-    ";
+    // 1. Récupérer les détails des concours "en cours" pour les cartes
+    $sql = "SELECT numConcours, theme, dateDeb, dateFin, Etat, description 
+            FROM Concours 
+            WHERE Etat = 'en cours' 
+            ORDER BY dateDeb DESC 
+            LIMIT 4";
     $stmt = $pdo->query($sql);
     $concoursEnCours = $stmt->fetchAll();
+
+    // 2. Statistiques dynamiques
+    // Nombre total de participants
+    $stats['participants'] = $pdo->query("SELECT COUNT(*) FROM Competiteur")->fetchColumn();
+    
+    // Nombre total de concours (tous états confondus)
+    $stats['concours_totaux'] = $pdo->query("SELECT COUNT(*) FROM Concours")->fetchColumn();
+    
+    // Nombre total de dessins soumis (Statistique intéressante : l'activité réelle)
+    $stats['dessins_publies'] = $pdo->query("SELECT COUNT(*) FROM Dessin")->fetchColumn();
+
 } catch (PDOException $e) {
     $erreurConnexion = "Détail : " . $e->getMessage();
 }
