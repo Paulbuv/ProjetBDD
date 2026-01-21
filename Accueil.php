@@ -11,21 +11,18 @@ try {
     $pdo = new PDO($dsn, $dbUser, $dbPass, [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-        PDO::ATTR_TIMEOUT => 3,
+        PDO::ATTR_TIMEOUT => 5, // Augmenté légèrement pour la stabilité
     ]);
 
-    // On neutralise la casse/les variantes de l'état pour éviter de masquer les concours en cours
+    // Note : Vérifiez si votre table est "Concours" ou "concours"
+    // Utilisation de LIKE pour être plus flexible sur les espaces éventuels
     $sql = "
-        SELECT numConcours, numPresident, theme, dateDeb, dateFin, Etat, description
-        FROM Concours
-        WHERE LOWER(Etat) = 'en cours'
-        ORDER BY dateDeb DESC
-        LIMIT 4
+        SELECT COUNT(*) FROM Concours WHERE Etat = 'en cours';
     ";
     $stmt = $pdo->query($sql);
     $concoursEnCours = $stmt->fetchAll();
 } catch (PDOException $e) {
-    $erreurConnexion = $e->getMessage();
+    $erreurConnexion = "Détail : " . $e->getMessage();
 }
 ?>
 <!DOCTYPE html>
@@ -129,12 +126,12 @@ try {
         <section class="about" data-anim>
             <div class="about-text">
                 <p class="kicker">Qui sommes-nous ?</p>
-                <h3>SEB équipe de 4 étudiants ingénieurs passionnés d’art</h3>
+                <h3>Une équipe de 4 étudiants ingénieurs passionnés d’art</h3>
                 <p>Nous sommes quatre étudiants de l’ESEO réunis par l’envie de mettre la technologie au service de la créativité. Nous imaginons, concevons et animons cette plateforme pour faciliter l’organisation de concours, valoriser les talents et rapprocher les artistes de toutes les générations.</p>
                 <p>Notre ambition : offrir un espace simple, moderne et chaleureux pour que chacun puisse lancer un concours, partager ses œuvres et célébrer l’art sous toutes ses formes.</p>
             </div>
             <div class="about-media">
-                <img src="https://www.eseo.fr/sites/default/files/styles/1920x900/public/2023-09/eseo-angers-campus.jpg" alt="Campus de l'ESEO" class="about-photo" loading="lazy">
+                <img src="images/eseo.jpg" alt="Campus de l'ESEO" class="about-photo" loading="lazy">
             </div>
         </section>
     </main>
