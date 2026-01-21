@@ -91,7 +91,16 @@ if (!isset($selectedConcours)) {
 <head>
     <meta charset="UTF-8">
     <title>Concours de dessins - Résultats</title>
-    <link rel="stylesheet" href="./CSS.css">
+    <?php
+    // Construction du chemin vers CSS.css (chemin relatif depuis le répertoire du script)
+    $basePath = dirname($_SERVER['SCRIPT_NAME']);
+    if ($basePath === '/') {
+        $cssPath = '/CSS.css';
+    } else {
+        $cssPath = $basePath . '/CSS.css';
+    }
+    ?>
+    <link rel="stylesheet" href="<?= htmlspecialchars($cssPath) ?>">
 </head>
 <body>
  
