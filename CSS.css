@@ -1,48 +1,8 @@
-/* 1. VARIABLES GLOBALES : Centralisation du thème */
-:root {
-    --primary-grad: linear-gradient(135deg, #ff8a65 0%, #ffb74d 100%);
-    --primary-color: #ff8a65;
-    --secondary-color: #ffb74d;
-    --bg-soft: #fff7ed;
-    --border-color: #ffe0b2;
-    --shadow-soft: 0 6px 18px rgba(255, 138, 101, 0.12);
-    --shadow-strong: 0 14px 32px rgba(255, 138, 101, 0.22);
-    --transition: all 0.25s ease;
-}
-
-/* 2. RÉINITIALISATION ET BASE */
 body {
     margin: 0;
-    font-family: 'Segoe UI', Arial, sans-serif;
+    font-family: Arial, sans-serif;
     background-color: #f4f4f8;
     color: #333;
-}
-
-/* 3. STRUCTURES RÉPÉTITIVES (Cartes) */
-/* Regroupement des styles communs aux cartes d'info, de concours et de podium */
-.info-card, .concours-card, .podium-card {
-    background: white;
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    padding: 16px;
-    box-shadow: var(--shadow-soft);
-    transition: var(--transition);
-}
-
-.info-card:hover, .concours-card:hover, .podium-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-strong);
-    border-color: var(--secondary-color);
-}
-
-/* 4. ÉLÉMENTS DE NAVIGATION ET HEADER */
-header {
-    background: var(--primary-grad);
-    color: white;
-    padding: 16px 20px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
 }
 
 .header-logo {
@@ -50,7 +10,33 @@ header {
     top: 15px !important;
     right: 20px !important;
     height: 85px !important;
+    max-width: 160px !important;
+    width: auto !important;
+    border-radius: 6px !important;
     object-fit: contain !important;
+    /*box-shadow: 0 1px 4px rgba(0,0,0,0.00);*/
+}
+
+header {
+    background: linear-gradient(135deg, #9b65ff, #ffb74d);
+    color: white;
+    padding: 16px 20px 16px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    position: relative;
+    min-height: 64px;
+}
+
+header h1 {
+    margin: 0 0 10px 0;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
 }
 
 nav a {
@@ -60,70 +46,689 @@ nav a {
     color: white;
     border-radius: 4px;
     background-color: rgba(255, 255, 255, 0.15);
-    transition: var(--transition);
+    transition: background-color 0.2s, transform 0.1s;
 }
 
-nav a:hover { background-color: rgba(255, 255, 255, 0.3); }
-nav a.active { background-color: rgba(0, 0, 0, 0.25); font-weight: bold; }
+nav a:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: translateY(-1px);
+}
 
-/* 5. BOUTONS */
+nav a.active {
+    background-color: rgba(0, 0, 0, 0.25);
+    font-weight: bold;
+}
+
+main {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+main h2 {
+    margin-top: 0;
+}
+
+.kicker {
+    font-size: 0.85em;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #ff8a65;
+    margin: 0 0 4px 0;
+    font-weight: 700;
+}
+
+.link {
+    color: #ff8a65;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* Hero kicker (Accueil) */
+.hero-kicker {
+    display: inline-block;
+    margin: 0 0 2px 0;
+    padding: 6px 10px;
+    border-radius: 999px;
+    color: white;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    background: rgba(0, 0, 0, 0.18);
+    backdrop-filter: blur(6px);
+    border: 1px solid rgba(255,255,255,0.22);
+}
+
+section {
+    margin-top: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #fafafa;
+    border: 1px solid #e0e0e0;
+}
+
+footer {
+    text-align: center;
+    padding: 15px;
+    font-size: 0.9em;
+    color: #777;
+}
+
+/* Styles pour les tableaux */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    background-color: white;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+}
+
+table thead {
+    background: linear-gradient(135deg, #ff8a65, #ffb74d);
+    color: white;
+}
+
+table thead th {
+    padding: 14px 16px;
+    text-align: left;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+
+table tbody tr {
+    border-bottom: 1px solid #e5e5e5;
+    transition: background-color 0.18s ease, transform 0.08s ease;
+}
+
+table tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+table tbody tr:hover {
+    background-color: #fff7ed;
+    cursor: pointer;
+    transform: translateY(-1px);
+}
+
+table tbody tr:last-child {
+    border-bottom: none;
+}
+
+table tbody td {
+    padding: 12px 16px;
+    color: #333;
+    font-size: 0.95em;
+}
+
+table tbody td:first-child {
+    font-weight: 500;
+    color: #ff8a65;
+}
+
+/* Style pour les formulaires */
+form {
+    margin: 20px 0;
+    padding: 20px;
+    background-color: #fafafa;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+form label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+form select {
+    padding: 10px 14px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1em;
+    background-color: white;
+    color: #333;
+    min-width: 300px;
+    transition: border-color 0.2s ease;
+}
+
+form select:focus {
+    outline: none;
+    border-color: #ff8a65;
+    box-shadow: 0 0 0 3px rgba(255, 138, 101, 0.1);
+}
+
+form button,
+form input[type="submit"] {
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #ff8a65, #ffb74d);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.1s ease, box-shadow 0.2s ease;
+    margin-top: 10px;
+}
+
+form button:hover,
+form input[type="submit"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(255, 138, 101, 0.3);
+}
+
+form button:active,
+form input[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* --- Accueil / Hero --- */
+.hero {
+    display: grid;
+    grid-template-columns: 1.6fr 0.9fr;
+    gap: 22px;
+    padding: 28px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #ffb74d 60%, #fff7ed 100%);
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 18px 50px rgba(255, 138, 101, 0.18);
+}
+
+.hero-content h2 {
+    font-size: 2.2em;
+    margin: 8px 0 6px 0;
+}
+
+.hero-content h2 span {
+    color: #ff8a65;
+}
+
+.hero-text {
+    margin: 0 0 16px 0;
+    color: #4a4a4a;
+    line-height: 1.5;
+    max-width: 560px;
+}
+
+.hero-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
 .btn {
     display: inline-block;
     padding: 10px 16px;
     border-radius: 8px;
     font-weight: 700;
     text-decoration: none;
-    transition: var(--transition);
+    transition: transform 0.1s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .btn.primary {
-    background: var(--primary-grad);
+    background: linear-gradient(135deg, #ff8a65, #ffb74d);
     color: #fff;
     box-shadow: 0 6px 16px rgba(255, 138, 101, 0.25);
-}
-
-.btn.ghost {
-    border: 2px solid var(--primary-color);
-    color: var(--primary-color);
-    background: var(--bg-soft);
-}
-
-/* 6. TABLEAUX ET FORMULAIRES */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 6px;
+    position: relative;
     overflow: hidden;
 }
 
-table thead { background: var(--primary-grad); color: white; }
-
-table tbody tr:hover { background-color: var(--bg-soft); }
-
-form input, form select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    transition: border-color 0.2s;
+.btn.primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, rgba(255,255,255,0.25), rgba(255,255,255,0));
+    transform: translateX(-120%);
+    transition: transform 0.5s ease;
 }
 
-form input:focus { border-color: var(--primary-color); outline: none; }
+.btn.primary:hover::after {
+    transform: translateX(120%);
+}
 
-/* 7. SECTIONS SPÉCIFIQUES (HERO & PODIUM) */
-.hero {
-    display: grid;
-    grid-template-columns: 1.6fr 0.9fr;
-    gap: 22px;
-    padding: 28px;
-    background: linear-gradient(135deg, var(--secondary-color) 60%, var(--bg-soft) 100%);
+.btn.ghost {
+    border: 2px solid #ff8a65;
+    color: #ff8a65;
+    background: #fff7ed;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+/* Floating shapes (decor) */
+.floating-shapes {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.floating-shapes span {
+    position: absolute;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle, rgba(255,138,101,0.45), rgba(255,183,77,0));
+    filter: blur(18px);
+    opacity: 0.7;
+    animation: float 12s ease-in-out infinite;
+}
+
+.floating-shapes span:nth-child(1) { top: -30px; left: -20px; animation-delay: 0s; }
+.floating-shapes span:nth-child(2) { top: 10%; right: -40px; animation-delay: 2.5s; }
+.floating-shapes span:nth-child(3) { bottom: -35px; left: 15%; animation-delay: 4s; }
+.floating-shapes span:nth-child(4) { bottom: 10%; right: 18%; animation-delay: 6s; }
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.7; }
+    50% { transform: translateY(-18px) scale(1.08); opacity: 0.95; }
+}
+
+.hero-badge {
+    background: #fff;
+    border: 1px solid #ffd7ba;
     border-radius: 10px;
-    box-shadow: 0 18px 50px rgba(255, 138, 101, 0.18);
+    text-align: center;
+    padding: 18px 12px;
+    box-shadow: 0 12px 30px rgba(255, 138, 101, 0.18);
+    position: relative;
+    isolation: isolate;
+}
+
+.hero-badge::before {
+    content: "";
+    position: absolute;
+    inset: -2px;
+    border-radius: 12px;
+    background: radial-gradient(circle at 20% 10%, rgba(255,138,101,0.22), transparent 55%),
+                radial-gradient(circle at 90% 80%, rgba(255,183,77,0.22), transparent 60%);
+    z-index: -1;
+}
+
+.hero-badge .badge-title {
+    margin: 0;
+    font-weight: 700;
+    color: #ff8a65;
+}
+
+.hero-badge .badge-number {
+    font-size: 2.4em;
+    margin: 6px 0 2px 0;
+    font-weight: 800;
+    color: #333;
+}
+
+.hero-badge .badge-subtitle {
+    margin: 0;
+    color: #666;
+    font-size: 0.95em;
+}
+
+/* --- Info grid --- */
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 14px;
+    margin-top: 20px;
+}
+
+.info-card {
+    background: #fff7ed;
+    border: 1px solid #ffe0b2;
+    border-radius: 8px;
+    padding: 16px;
+    box-shadow: 0 3px 10px rgba(255, 138, 101, 0.08);
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.info-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 20% 20%, rgba(255,138,101,0.12), transparent 55%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 26px rgba(255, 138, 101, 0.16);
+}
+
+.info-card:hover::after {
+    opacity: 1;
+}
+
+.info-card h3 {
+    margin: 0 0 6px 0;
+}
+
+.info-card p {
+    margin: 0;
+    color: #4a4a4a;
+}
+
+/* --- Concours cards --- */
+.section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.concours-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.concours-card {
+    background: #fff;
+    border: 1px solid #ffe0b2;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 6px 18px rgba(255, 138, 101, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-height: 210px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.concours-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,138,101,0.06), rgba(255,183,77,0.08));
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+}
+
+.concours-card:hover {
+    box-shadow: 0 14px 32px rgba(255, 138, 101, 0.22);
+    border-color: #ffb74d;
+}
+
+.concours-card:hover::after {
+    opacity: 1;
+}
+
+.concours-card__header {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+}
+
+.pill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #ff8a65;
+    color: #fff;
+    font-size: 0.85em;
+    font-weight: 700;
+    box-shadow: 0 6px 14px rgba(255, 138, 101, 0.16);
+}
+
+.pill-light {
+    background: #fff0e5;
+    color: #ff8a65;
+    border: 1px solid #ffcca9;
+}
+
+.concours-card h4 {
+    margin: 0;
+    color: #2c2c2c;
+}
+
+.concours-card .dates {
+    margin: 0;
+    font-weight: 600;
+    color: #444;
+}
+
+.concours-card .description {
+    margin: 0;
+    color: #4a4a4a;
+    flex: 1;
+}
+
+.card-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.error {
+    color: #d32f2f;
+    font-weight: 700;
+}
+
+.muted {
+    color: #666;
+}
+
+/* --- About section --- */
+.about {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 18px;
+    align-items: center;
+}
+
+.about-text h3 {
+    margin: 4px 0 10px 0;
+}
+
+.about-text p {
+    margin: 0 0 12px 0;
+    line-height: 1.5;
+}
+
+.about-media {
+    text-align: center;
+}
+
+.about-photo {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.12);
+    border: 1px solid #ffd7ba;
+}
+
+/* Animations d’apparition (Accueil) */
+[data-anim] {
+    opacity: 0;
+    transform: translateY(18px) scale(0.99);
+    transition: opacity 0.45s ease, transform 0.45s ease;
+    will-change: opacity, transform;
+}
+
+[data-anim].is-visible {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    [data-anim] {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .floating-shapes span {
+        animation: none;
+    }
+    .info-card,
+    .concours-card,
+    .btn {
+        transition: none;
+    }
+}
+
+/* Logo in header (top-right) */
+
+
+
+@media (max-width: 600px) {
+    .header-logo {
+        height: 22px;
+        max-width: 50px;
+        top: 8px;
+        right: 10px;
+    }
+
+    .hero {
+        grid-template-columns: 1fr;
+    }
+
+    .hero-badge {
+        width: 170px;
+        justify-self: flex-start;
+    }
+
+    .concours-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* --- Galerie / Podium --- */
+.podium {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 18px;
+    margin-top: 16px;
+}
+
+.podium-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    border: 1px solid #e0e0e0;
+    cursor: zoom-in;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
 }
 
 .podium-image-wrapper {
     position: relative;
     width: 100%;
-    height: 220px;
-    background: var(--primary-grad);
+    height: 220px; /* aperçu de taille fixe */
+    overflow: hidden;
+    background: linear-gradient(135deg, #ffe0b2, #ffb74d);
+}
+
+.podium-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.podium-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px 10px;
+    background: linear-gradient(180deg, rgba(0,0,0,0.0), rgba(0,0,0,0.75));
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.podium-rank-text {
+    font-weight: 700;
+    font-size: 0.95em;
+}
+
+.podium-name-text {
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.podium-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 28px rgba(0,0,0,0.16);
+    border-color: #ffb74d;
+}
+
+/* Zoom overlay (Galerie) */
+.zoom-overlay {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.zoom-overlay.is-open {
+    display: flex;
+}
+
+.zoom-overlay__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.55);
+}
+
+.zoom-overlay__content {
+    position: relative;
+    max-width: 90vw;
+    max-height: 90vh;
+    z-index: 1;
+}
+
+.zoom-overlay__image {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 10px;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.3);
+    border: 3px solid #fff;
+    background: #fafafa;
+}
+
+.zoom-overlay__close {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    border: none;
+    background: #ff8a65;
+    color: #fff;
+    font-size: 1.4em;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoom-overlay__close:hover {
+    background: #ff7043;
 }
