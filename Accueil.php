@@ -127,7 +127,7 @@ try {
         <section class="about" data-anim>
             <div class="about-text">
                 <p class="kicker">Qui sommes-nous ?</p>
-                <h3>Une équipe de 4 étudiants ingénieurs passionnés d’art</h3>
+                <h3>SEB équipe de 4 étudiants ingénieurs passionnés d’art</h3>
                 <p>Nous sommes quatre étudiants de l’ESEO réunis par l’envie de mettre la technologie au service de la créativité. Nous imaginons, concevons et animons cette plateforme pour faciliter l’organisation de concours, valoriser les talents et rapprocher les artistes de toutes les générations.</p>
                 <p>Notre ambition : offrir un espace simple, moderne et chaleureux pour que chacun puisse lancer un concours, partager ses œuvres et célébrer l’art sous toutes ses formes.</p>
             </div>
