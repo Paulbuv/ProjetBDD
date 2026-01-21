@@ -141,7 +141,7 @@ if (!isset($selectedConcours)) {
             <?php if (empty($topDessins)): ?>
                 <p>Aucun classement trouvé pour ce concours.</p>
             <?php else: ?>
-                <div class="podium" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:16px;">
+                <div class="podium">
                     <?php foreach ($topDessins as $dessin): ?>
                         <?php
                             $rang = isset($dessin['classement']) ? (int)$dessin['classement'] : 0;
@@ -161,12 +161,19 @@ if (!isset($selectedConcours)) {
                                 $imagePath = "dessins/concours" . $selectedConcours . "_dessin" . $numDessin . ".jpg";
                             }
                         ?>
-                        <div class="podium-card" style="background:#fff;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,0.08);overflow:hidden;border:1px solid #e0e0e0;">
-                            <div class="podium-image-wrapper" style="position:relative;width:100%;height:220px;overflow:hidden;background:linear-gradient(135deg,#ffe0b2,#ffb74d);">
-                                <!-- Pour l'instant, pas d'image, seulement une box vide avec le bandeau -->
-                                <div class="podium-caption" style="position:absolute;left:0;right:0;bottom:0;padding:8px 10px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,0.75));color:#fff;display:flex;flex-direction:column;gap:2px;">
-                                    <span class="podium-rank-text" style="font-weight:700;font-size:0.95em;"><?= $medal ?> Rang <?= htmlspecialchars((string)$rang) ?></span>
-                                    <span class="podium-name-text" style="font-size:0.9em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;"><?= htmlspecialchars($titre) ?></span>
+                        <div class="podium-card" data-zoom>
+                            <div class="podium-image-wrapper">
+                                <?php if (!empty($imagePath)): ?>
+                                    <img src="<?= htmlspecialchars($imagePath) ?>"
+                                         alt="Dessin du participant <?= htmlspecialchars($titre) ?>"
+                                         class="podium-img"
+                                         loading="lazy"
+                                         data-full="<?= htmlspecialchars($imagePath) ?>"
+                                    >
+                                <?php endif; ?>
+                                <div class="podium-caption">
+                                    <span class="podium-rank-text"><?= $medal ?> Rang <?= htmlspecialchars((string)$rang) ?></span>
+                                    <span class="podium-name-text"><?= htmlspecialchars($titre) ?></span>
                                 </div>
                             </div>
                         </div>
@@ -176,10 +183,55 @@ if (!isset($selectedConcours)) {
         <?php endif; ?>
     </section>
 </main>
- 
+
 <footer>
     <p>&copy; <?= date('Y'); ?> - Gestion des concours de dessins</p>
 </footer>
- 
+
+<script>
+// Galerie : zoom plein écran sur les dessins du podium
+document.addEventListener('DOMContentLoaded', () => {
+    const cards = document.querySelectorAll('.podium-card[data-zoom] img.podium-img');
+    if (!cards.length) return;
+
+    const overlay = document.createElement('div');
+    overlay.className = 'zoom-overlay';
+    overlay.innerHTML = `
+        <div class="zoom-overlay__backdrop"></div>
+        <div class="zoom-overlay__content" role="dialog" aria-modal="true">
+            <button type="button" class="zoom-overlay__close" aria-label="Fermer l’aperçu">×</button>
+            <img src="" alt="Dessin en grand format" class="zoom-overlay__image">
+        </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const imgTarget = overlay.querySelector('.zoom-overlay__image');
+    const closeBtn = overlay.querySelector('.zoom-overlay__close');
+    const backdrop = overlay.querySelector('.zoom-overlay__backdrop');
+
+    const open = (src) => {
+        imgTarget.src = src;
+        overlay.classList.add('is-open');
+    };
+    const close = () => {
+        overlay.classList.remove('is-open');
+        imgTarget.src = '';
+    };
+
+    cards.forEach(img => {
+        img.addEventListener('click', () => {
+            const src = img.dataset.full || img.src;
+            open(src);
+        });
+    });
+
+    closeBtn.addEventListener('click', close);
+    backdrop.addEventListener('click', close);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+    });
+});
+</script>
+
 </body>
 </html>
