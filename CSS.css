@@ -7,10 +7,10 @@ body {
 
 .header-logo {
     position: absolute !important;
-    top: 12px !important;
-    right: 18px !important;
-    height: 55px !important;
-    max-width: 120px !important;
+    top: 15px !important;
+    right: 20px !important;
+    height: 85px !important;
+    max-width: 160px !important;
     width: auto !important;
     border-radius: 6px !important;
     object-fit: contain !important;
