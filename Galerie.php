@@ -2,26 +2,8 @@
 session_start();
 
 // ------------------------------------------------------------
-// Fonction helper pour trouver le chemin d'une image de dessin
-// ------------------------------------------------------------
-function trouverImageDessin($numConcours, $numDessin) {
-    $extensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-    $baseDir = __DIR__ . '/dessins/'; // Chemin absolu côté serveur
-    $relativePath = 'dessins/'; // Chemin relatif pour le HTML
-    $baseName = "concours{$numConcours}_dessin{$numDessin}";
-    
-    foreach ($extensions as $ext) {
-        $serverPath = $baseDir . $baseName . '.' . $ext;
-        if (file_exists($serverPath)) {
-            return $relativePath . $baseName . '.' . $ext;
-        }
-    }
-    
-    return null; // Aucune image trouvée
-}
-
-// ------------------------------------------------------------
 // Récupération dynamique de la liste des concours depuis la BDD
+// Les chemins des images sont stockés dans la colonne leDessin
 // ------------------------------------------------------------
 $dsn = 'mysql:host=localhost;dbname=Projet_BDD;charset=utf8mb4';
 $dbUser = 'db_etu';
@@ -60,9 +42,9 @@ try {
             SELECT 
                 d.numDessin,
                 d.classement,
+                d.leDessin,
                 u.nom,
-                u.prenom,
-                ROW_NUMBER() OVER (ORDER BY d.numDessin ASC) as numOrdre
+                u.prenom
             FROM Dessin d
             JOIN Competiteur c ON c.numCompetiteur = d.numCompetiteur
             JOIN Utilisateur u ON u.numUtilisateur = c.numCompetiteur
@@ -79,9 +61,9 @@ try {
         $sqlAll = "
             SELECT 
                 d.numDessin,
+                d.leDessin,
                 u.nom,
-                u.prenom,
-                ROW_NUMBER() OVER (ORDER BY d.numDessin ASC) as numOrdre
+                u.prenom
             FROM Dessin d
             JOIN Competiteur c ON c.numCompetiteur = d.numCompetiteur
             JOIN Utilisateur u ON u.numUtilisateur = c.numCompetiteur
@@ -184,12 +166,9 @@ if (!isset($selectedConcours)) {
                             }
                             $medal = ($rang === 1) ? "🥇" : (($rang === 2) ? "🥈" : (($rang === 3) ? "🥉" : "🏅"));
 
-                            // Recherche dynamique de l'image (utilise numOrdre au lieu de numDessin)
-                            $numOrdre = isset($dessin['numOrdre']) ? (int)$dessin['numOrdre'] : 0;
-                            $imagePath = ($selectedConcours > 0 && $numOrdre > 0) 
-                                ? trouverImageDessin($selectedConcours, $numOrdre) 
-                                : null;
-                            $numDessin = $numOrdre; // Pour l'affichage du message de debug
+                            // Récupération du chemin de l'image depuis la BDD
+                            $imagePath = !empty($dessin['leDessin']) ? $dessin['leDessin'] : null;
+                            $numDessin = isset($dessin['numDessin']) ? (int)$dessin['numDessin'] : 0;
                         ?>
                         <div class="podium-card" data-zoom>
                             <div class="podium-image-wrapper">
@@ -202,8 +181,7 @@ if (!isset($selectedConcours)) {
                                     >
                                 <?php else: ?>
                                     <div style="background:#f0f0f0;padding:40px;text-align:center;color:#999;">
-                                        Image non trouvée<br>
-                                        <small>concours<?= $selectedConcours ?>_dessin<?= $numDessin ?></small>
+                                        Image non disponible
                                     </div>
                                 <?php endif; ?>
                                 <div class="podium-caption">
@@ -235,12 +213,9 @@ if (!isset($selectedConcours)) {
                                 $titreAll = 'Participant inconnu';
                             }
 
-                            // Recherche dynamique de l'image (utilise numOrdre au lieu de numDessin)
-                            $numOrdreAll = isset($dessin['numOrdre']) ? (int)$dessin['numOrdre'] : 0;
-                            $imagePathAll = ($selectedConcours > 0 && $numOrdreAll > 0) 
-                                ? trouverImageDessin($selectedConcours, $numOrdreAll) 
-                                : null;
-                            $numDessinAll = $numOrdreAll; // Pour l'affichage du message de debug
+                            // Récupération du chemin de l'image depuis la BDD
+                            $imagePathAll = !empty($dessin['leDessin']) ? $dessin['leDessin'] : null;
+                            $numDessinAll = isset($dessin['numDessin']) ? (int)$dessin['numDessin'] : 0;
                         ?>
                         <div class="podium-card" data-zoom>
                             <div class="podium-image-wrapper">
@@ -253,8 +228,7 @@ if (!isset($selectedConcours)) {
                                     >
                                 <?php else: ?>
                                     <div style="background:#f0f0f0;padding:40px;text-align:center;color:#999;">
-                                        Image non trouvée<br>
-                                        <small>concours<?= $selectedConcours ?>_dessin<?= $numDessinAll ?></small>
+                                        Image non disponible
                                     </div>
                                 <?php endif; ?>
                                 <div class="podium-caption">
