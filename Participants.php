@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// Vérification de l'authentification
+if (!isset($_SESSION['login'])) {
+    header('Location: Login.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -148,16 +154,40 @@ session_start();
             </h3>
 
             <?php if (!empty($participants)): ?>
-                <table>
+                <div class="table-responsive">
+                <table id="participantsTable">
                     <thead>
                         <tr>
-                            <th>N° utilisateur</th>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Âge</th>
-                            <th>Email</th>
-                            <th>Club</th>
-                            <th>Ville</th>
+                            <th class="sortable" data-column="0" data-type="number">
+                                N° utilisateur <span class="sort-indicator"></span>
+                            </th>
+                            <th class="sortable" data-column="1" data-type="string">
+                                Nom <span class="sort-indicator"></span>
+                            </th>
+                            <th class="sortable" data-column="2" data-type="string">
+                                Prénom <span class="sort-indicator"></span>
+                            </th>
+                            <th class="sortable" data-column="3" data-type="number">
+                                Âge <span class="sort-indicator"></span>
+                            </th>
+                            <th class="sortable" data-column="4" data-type="string">
+                                Email <span class="sort-indicator"></span>
+                            </th>
+                            <th class="sortable" data-column="5" data-type="string">
+                                Club <span class="sort-indicator"></span>
+                            </th>
+                            <th class="sortable" data-column="6" data-type="string">
+                                Ville <span class="sort-indicator"></span>
+                            </th>
+                        </tr>
+                        <tr class="filter-row">
+                            <th><input type="text" class="column-filter" placeholder="Filtrer..." data-column="0"></th>
+                            <th><input type="text" class="column-filter" placeholder="Filtrer..." data-column="1"></th>
+                            <th><input type="text" class="column-filter" placeholder="Filtrer..." data-column="2"></th>
+                            <th><input type="text" class="column-filter" placeholder="Filtrer..." data-column="3"></th>
+                            <th><input type="text" class="column-filter" placeholder="Filtrer..." data-column="4"></th>
+                            <th><input type="text" class="column-filter" placeholder="Filtrer..." data-column="5"></th>
+                            <th><input type="text" class="column-filter" placeholder="Filtrer..." data-column="6"></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -174,6 +204,7 @@ session_start();
                         <?php endforeach; ?>
                     </tbody>
                 </table>
+                </div>
             <?php else: ?>
                 <p>
                     <?php if ($numConcoursChoisi): ?>
@@ -189,6 +220,8 @@ session_start();
     <footer>
         <p>&copy; <?php echo date('Y'); ?> - Gestion des concours de dessins</p>
     </footer>
+
+    <script src="participants.js"></script>
 </body>
 </html>
 

@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Vérification de l'authentification
+if (!isset($_SESSION['login'])) {
+    header('Location: Login.php');
+    exit();
+}
+
 $dsn = 'mysql:host=localhost;dbname=Projet_BDD;charset=utf8mb4';
 $dbUser = 'db_etu';
 $dbPass = 'N3twork!';
@@ -23,7 +29,7 @@ try {
     // 1. Récupérer les détails des concours "en cours" pour les cartes
     $sql = "SELECT numConcours, theme, dateDeb, dateFin, Etat, description 
             FROM Concours 
-            WHERE Etat = 'en cours' 
+            WHERE Etat = 'EnCours' 
             ORDER BY dateDeb DESC 
             LIMIT 4";
     $stmt = $pdo->query($sql);

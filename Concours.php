@@ -1,5 +1,11 @@
 <?php
 session_start();
+
+// Vérification de l'authentification
+if (!isset($_SESSION['login'])) {
+    header('Location: Login.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">

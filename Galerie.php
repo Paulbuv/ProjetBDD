@@ -1,6 +1,12 @@
 <?php
 session_start();
 
+// Vérification de l'authentification
+if (!isset($_SESSION['login'])) {
+    header('Location: Login.php');
+    exit();
+}
+
 // ------------------------------------------------------------
 // Récupération dynamique de la liste des concours depuis la BDD
 // Les chemins des images sont stockés dans la colonne leDessin

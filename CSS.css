@@ -60,7 +60,7 @@ nav a.active {
 }
 
 main {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 20px auto;
     padding: 20px;
     background-color: white;
@@ -586,7 +586,196 @@ form input[type="submit"]:active {
 
 /* Logo in header (top-right) */
 
+/* === Styles pour le tableau des participants avec tri et filtres === */
+.sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
 
+.sortable:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+}
+
+.sortable.active {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+.sort-indicator {
+    display: inline-block;
+    margin-left: 4px;
+    font-size: 0.7em;
+    opacity: 0.5;
+    transition: opacity 0.2s ease;
+}
+
+.sortable.active .sort-indicator {
+    opacity: 1;
+}
+
+.sort-indicator::after {
+    content: '⇅';
+}
+
+.sortable.asc .sort-indicator::after {
+    content: '▲';
+}
+
+.sortable.desc .sort-indicator::after {
+    content: '▼';
+}
+
+/* Ligne de filtres */
+.filter-row th {
+    padding: 6px 4px;
+    background: rgba(255, 255, 255, 0.95);
+}
+
+.column-filter {
+    width: 100%;
+    max-width: 100%;
+    padding: 5px 6px;
+    border: 2px solid #e0e0e0;
+    border-radius: 4px;
+    font-size: 0.75em;
+    transition: border-color 0.2s ease;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.column-filter:focus {
+    outline: none;
+    border-color: #ff8a65;
+    box-shadow: 0 0 0 2px rgba(255, 138, 101, 0.1);
+}
+
+/* Animation pour les lignes filtrées */
+#participantsTable tbody tr {
+    transition: opacity 0.2s ease;
+}
+
+#participantsTable tbody tr.hidden {
+    display: none;
+}
+
+/* Compteur de résultats */
+.results-count {
+    margin: 10px 0;
+    padding: 8px 12px;
+    background-color: #fff7ed;
+    border: 1px solid #ffe0b2;
+    border-radius: 4px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.results-count strong {
+    color: #ff8a65;
+    font-weight: 700;
+}
+
+/* Ajustements spécifiques pour le tableau participants */
+#participantsTable {
+    table-layout: auto;
+}
+
+/* Conteneur avec scroll horizontal si nécessaire */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 20px 0;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #ff8a65;
+    border-radius: 4px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #ff7043;
+}
+
+#participantsTable th,
+#participantsTable td {
+    padding: 10px 6px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.9em;
+}
+
+#participantsTable thead th {
+    font-size: 0.8em;
+    padding: 12px 6px;
+}
+
+/* Largeurs optimisées pour les colonnes */
+#participantsTable th:nth-child(1),
+#participantsTable td:nth-child(1) {
+    width: 7%;
+    min-width: 50px;
+}
+
+#participantsTable th:nth-child(2),
+#participantsTable td:nth-child(2) {
+    width: 11%;
+    min-width: 70px;
+}
+
+#participantsTable th:nth-child(3),
+#participantsTable td:nth-child(3) {
+    width: 11%;
+    min-width: 70px;
+}
+
+#participantsTable th:nth-child(4),
+#participantsTable td:nth-child(4) {
+    width: 5%;
+    min-width: 40px;
+    text-align: center;
+}
+
+#participantsTable th:nth-child(5),
+#participantsTable td:nth-child(5) {
+    width: 25%;
+    min-width: 110px;
+    word-break: break-all;
+}
+
+#participantsTable th:nth-child(6),
+#participantsTable td:nth-child(6) {
+    width: 20%;
+    min-width: 80px;
+}
+
+#participantsTable th:nth-child(7),
+#participantsTable td:nth-child(7) {
+    width: 21%;
+    min-width: 80px;
+}
+
+@media (max-width: 900px) {
+    main {
+        max-width: 100%;
+        margin: 10px;
+        padding: 15px;
+    }
+
+    #participantsTable {
+        font-size: 0.85em;
+    }
+}
 
 @media (max-width: 600px) {
     .header-logo {
@@ -607,6 +796,41 @@ form input[type="submit"]:active {
 
     .concours-grid {
         grid-template-columns: 1fr;
+    }
+
+    main {
+        margin: 5px;
+        padding: 10px;
+    }
+
+    /* Ajustements tableau participants sur mobile */
+    #participantsTable th,
+    #participantsTable td {
+        padding: 6px 3px;
+        font-size: 0.75em;
+    }
+
+    #participantsTable thead th {
+        font-size: 0.7em;
+        padding: 8px 3px;
+    }
+
+    .column-filter {
+        padding: 3px 4px;
+        font-size: 0.7em;
+    }
+
+    .sortable {
+        font-size: 0.75em;
+    }
+
+    .sort-indicator {
+        margin-left: 2px;
+        font-size: 0.65em;
+    }
+
+    .filter-row th {
+        padding: 4px 2px;
     }
 }
 
@@ -702,8 +926,12 @@ form input[type="submit"]:active {
 }
 
 .zoom-overlay__image {
-    max-width: 100%;
-    max-height: 100%;
+    max-width: 90vw;
+    max-height: 90vh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    display: block;
     border-radius: 10px;
     box-shadow: 0 18px 45px rgba(0,0,0,0.3);
     border: 3px solid #fff;
