@@ -57,28 +57,28 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
              class="header-logo"
         >
         </header>
-    <main style="max-width: 400px; margin: 50px auto; padding: 25px; background: white; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+    <main class="login-main">
         <h2>Connexion</h2>
         
         <?php if($error): ?>
-            <p style="color: #721c24; background: #f8d7da; padding: 10px; border-radius: 4px; border: 1px solid #f5c6cb;">
+            <p class="login-error">
                 <?php echo $error; ?>
             </p>
         <?php endif; ?>
 
         <form action="Login.php" method="POST">
-            <div style="margin-bottom: 15px;">
-                <label style="display: block; font-weight: bold; margin-bottom: 5px;">Identifiant</label>
-                <input type="text" name="Login" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            <div class="login-form-group">
+                <label class="login-label">Identifiant</label>
+                <input type="text" name="Login" required class="login-input">
             </div>
-            <div style="margin-bottom: 20px;">
-                <label style="display: block; font-weight: bold; margin-bottom: 5px;">Mot de passe</label>
-                <input type="password" name="password" required style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;">
+            <div class="login-form-group last">
+                <label class="login-label">Mot de passe</label>
+                <input type="password" name="password" required class="login-input">
             </div>
-            <button type="submit" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #ff8a65, #ffb74d); color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 1.1em;">Se connecter</button>
+            <button type="submit" class="login-submit">Se connecter</button>
         </form>
     </main>
-    <footer style="text-align: center; margin-top: 20px; color: #666;">
+    <footer class="login-footer">
         <p>&copy; 2026 - ESEO - Projet BD_WEB</p>
     </footer>
 </body>

@@ -66,6 +66,7 @@ try {
                 <li><a href="Concours.php">Concours</a></li>
                 <li><a href="Participants.php">Participants</a></li>
                 <li><a href="Galerie.php">Galerie</a></li>
+                <li><a href="Dessiner.php">Dessiner</a></li>
                 <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
                     <li><a href="Admin.php">Administration</a></li>
                 <?php endif; ?>

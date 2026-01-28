@@ -117,7 +117,8 @@ if (!isset($selectedConcours)) {
             <li><a href="Accueil.php">Accueil</a></li>
             <li><a href="Concours.php">Concours</a></li>
             <li><a href="Participants.php">Participants</a></li>
-            <li><a href="Galerie.php">Galerie</a></li>
+            <li><a href="Galerie.php" class="active">Galerie</a></li>
+            <li><a href="Dessiner.php">Dessiner</a></li>
             <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
                 <li><a href="Admin.php">Administration</a></li>
             <?php endif; ?>
@@ -152,7 +153,7 @@ if (!isset($selectedConcours)) {
         <?php if ($selectedConcours === 0): ?>
             <p>Veuillez sélectionner un concours.</p>
         <?php elseif (!empty($erreurConnexion)): ?>
-            <p style="color:red;">
+            <p class="error-message">
                 Erreur de connexion à la base de données :
                 <?= htmlspecialchars($erreurConnexion, ENT_QUOTES, 'UTF-8'); ?>
             </p>
@@ -186,7 +187,7 @@ if (!isset($selectedConcours)) {
                                          data-full="<?= htmlspecialchars($imagePath) ?>"
                                     >
                                 <?php else: ?>
-                                    <div style="background:#f0f0f0;padding:40px;text-align:center;color:#999;">
+                                    <div class="placeholder-image">
                                         Image non disponible
                                     </div>
                                 <?php endif; ?>
@@ -233,7 +234,7 @@ if (!isset($selectedConcours)) {
                                          data-full="<?= htmlspecialchars($imagePathAll) ?>"
                                     >
                                 <?php else: ?>
-                                    <div style="background:#f0f0f0;padding:40px;text-align:center;color:#999;">
+                                    <div class="placeholder-image">
                                         Image non disponible
                                     </div>
                                 <?php endif; ?>

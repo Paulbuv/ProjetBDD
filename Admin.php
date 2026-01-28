@@ -101,6 +101,7 @@ try {
                 <li><a href="Concours.php">Concours</a></li>
                 <li><a href="Participants.php">Participants</a></li>
                 <li><a href="Galerie.php">Galerie</a></li>
+                <li><a href="Dessiner.php">Dessiner</a></li>
                 <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
                     <li><a href="Admin.php" class="active">Administration</a></li>
                 <?php endif; ?>
@@ -120,13 +121,13 @@ try {
         <?php endif; ?>
 
         <?php if (!empty($messageSucces)): ?>
-            <p style="color:#155724;background:#d4edda;border:1px solid #c3e6cb;padding:10px;border-radius:4px;">
+            <p class="success-message">
                 <?= $messageSucces ?>
             </p>
         <?php endif; ?>
 
         <?php if (!empty($messageErreur)): ?>
-            <p style="color:#721c24;background:#f8d7da;border:1px solid #f5c6cb;padding:10px;border-radius:4px;">
+            <p class="error-message">
                 <?= $messageErreur ?>
             </p>
         <?php endif; ?>

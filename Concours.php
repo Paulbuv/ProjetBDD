@@ -27,6 +27,7 @@ if (!isset($_SESSION['login'])) {
                 <li><a href="Concours.php" class="active">Concours</a></li>
                 <li><a href="Participants.php">Participants</a></li>
                 <li><a href="Galerie.php">Galerie</a></li>
+                <li><a href="Dessiner.php">Dessiner</a></li>
                 <?php if (isset($_SESSION['login']) && $_SESSION['login'] === 'admin'): ?>
                     <li><a href="Admin.php">Administration</a></li>
                 <?php endif; ?>
@@ -74,7 +75,7 @@ if (!isset($_SESSION['login'])) {
             <h3>Tous les concours</h3>
 
             <?php if (!empty($erreurConnexion)): ?>
-                <p style="color: red;">Erreur de connexion à la base de données : 
+                <p class="error-message">Erreur de connexion à la base de données : 
                     <?php echo htmlspecialchars($erreurConnexion, ENT_QUOTES, 'UTF-8'); ?>
                 </p>
             <?php endif; ?>
